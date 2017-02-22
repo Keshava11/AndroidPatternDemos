@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">StyleMVPLegacy</string>
+    <string name="desc_image_in_splash_screen">Image in splash screen</string>
+    <string name="login">LogIn</string>
+    <string name="user_name">User Name</string>
+    <string name="user_email">User Email</string>
+    <string name="email_id">Email ID</string>
+    <string name="password">Password</string>
+</resources>
