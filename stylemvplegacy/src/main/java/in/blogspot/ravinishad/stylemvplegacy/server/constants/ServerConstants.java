@@ -16,9 +16,9 @@ public class ServerConstants {
     }
 
     public static class ServerHeaderKeys {
-        public static final String AUTHORIZATION = "header_authorization";
-        public static final String CONTENT_TYPE = "header_content_type";
-        public static final String CONTENT_LENGTH = "header_content_length";
+        public static final String AUTHORIZATION = "Authorization";
+        public static final String CONTENT_TYPE = "Content-Type";
+        public static final String CONTENT_LENGTH = "Content-Length";
     }
 }
 

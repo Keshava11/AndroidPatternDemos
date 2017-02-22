@@ -69,12 +69,14 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
 
         if (!TextUtils.isEmpty(loginResponse.getEmailId()) && !TextUtils.isEmpty(loginResponse.getPassword())) {
             showToastMessage("Login is successful");
-            // Save them in preferences
+            // TODO Save them in preferences
 
         }
 
         // Launch new Activity
-        startActivity(new Intent(this, ProfileActivity.class));
+        Intent profileActivityIntent = new Intent(this, ProfileActivity.class);
+        profileActivityIntent.putExtra("user_info", loginResponse);
+        startActivity(profileActivityIntent);
         finish();
     }
 

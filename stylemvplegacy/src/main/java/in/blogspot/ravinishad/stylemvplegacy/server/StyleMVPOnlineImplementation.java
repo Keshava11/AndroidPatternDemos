@@ -3,24 +3,27 @@ package in.blogspot.ravinishad.stylemvplegacy.server;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.gson.Gson;
-import in.blogspot.ravinishad.stylemvplegacy.modals.LoginResponse;
-import in.blogspot.ravinishad.stylemvplegacy.server.constants.ServerCallPurpose;
-import in.blogspot.ravinishad.stylemvplegacy.server.constants.ServerConstants;
-import in.blogspot.ravinishad.stylemvplegacy.server.modals.HttpError;
-import in.blogspot.ravinishad.stylemvplegacy.server.modals.ServerException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.Random;
+
+import in.blogspot.ravinishad.stylemvplegacy.modals.LoginResponse;
+import in.blogspot.ravinishad.stylemvplegacy.server.constants.ServerCallPurpose;
+import in.blogspot.ravinishad.stylemvplegacy.server.constants.ServerConstants;
+import in.blogspot.ravinishad.stylemvplegacy.server.modals.HttpError;
+import in.blogspot.ravinishad.stylemvplegacy.server.modals.ServerException;
 
 /**
  * This will hold all the business logic here when all need to done from server side
@@ -44,6 +47,7 @@ public class StyleMVPOnlineImplementation implements RemoteTaskResponseListener 
 
     // FIXME Remove Random
     private static Random sRandom = new Random();
+    private static final String TAG = StyleMVPOnlineImplementation.class.getSimpleName();
     private int mCallPurpose;
     private String mExceptionMessage;
 
@@ -148,19 +152,39 @@ public class StyleMVPOnlineImplementation implements RemoteTaskResponseListener 
         HttpURLConnection httpURLConnection = null;
 
         try {
+            Log.e(TAG, "Url string : "+urlString);
+
             URL url = new URL(urlString);
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod(requestMethod);
+            httpURLConnection.setReadTimeout(60000);
+            httpURLConnection.setConnectTimeout(60000);
+
+            httpURLConnection.setDoInput(true);
+            httpURLConnection.setUseCaches(true);
 
             // Check headers and add in the httpUrlConnection
             String[] headerKeys = {ServerConstants.ServerHeaderKeys.AUTHORIZATION,
                     ServerConstants.ServerHeaderKeys.CONTENT_LENGTH, ServerConstants.ServerHeaderKeys.CONTENT_TYPE};
 
+            // Loop over headers to add in request
             for (String header : headerKeys) {
                 String headerValue = iRequestData.getString(header);
 
                 if (!TextUtils.isEmpty(headerValue))
                     httpURLConnection.setRequestProperty(header, headerValue);
+            }
+
+            // Few more properties when request method is POST
+            if (ServerConstants.RequestMethod.METHOD_POST.equals(requestMethod)) {
+                // It is required to be enabled for PUT and POST
+                httpURLConnection.setDoOutput(true);
+
+                if (!TextUtils.isEmpty(requestBodyContent)) {
+                    OutputStream ous = httpURLConnection.getOutputStream();
+                    ous.write(requestBodyContent.getBytes());
+                    ous.close();
+                }
             }
 
             //Check few properties of HttpURLConnection based upon the request method. Write request body
@@ -177,7 +201,7 @@ public class StyleMVPOnlineImplementation implements RemoteTaskResponseListener 
                     case ServerCallPurpose.LOGIN_POST:
                         return gson.fromJson(validResponse, LoginResponse.class);
                     case ServerCallPurpose.PROFILE_GET:
-
+                        // TODO
                         break;
                     default:
                         mExceptionMessage = "Illegal ServerCallPurpose";
@@ -191,6 +215,7 @@ public class StyleMVPOnlineImplementation implements RemoteTaskResponseListener 
                 // TODO Read error stream and parse
                 // 3. Check for http Error
                 String errorResponse = streamToString(es);
+                Log.e(TAG, "Error response : "+errorResponse);
 
                 String httpErrorMsg  = httpURLConnection.getResponseMessage()!=null?httpURLConnection.getResponseMessage():errorResponse;
 

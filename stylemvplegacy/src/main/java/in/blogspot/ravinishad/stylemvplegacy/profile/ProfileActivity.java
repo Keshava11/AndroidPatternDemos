@@ -8,12 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ravi.stylemvplegacy.R;
-import in.blogspot.ravinishad.stylemvplegacy.modals.LoginResponse;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import in.blogspot.ravinishad.stylemvplegacy.modals.LoginResponse;
 
 /**
  * Created by ravi on 2/3/17.
@@ -43,7 +43,8 @@ public class ProfileActivity extends AppCompatActivity {
         String name = loginResponse.getUserName();
         String emaild = loginResponse.getEmailId();
 
-        Picasso.with(this).load(imageUrl).resize(100, 100).into(mProfileImv);
+        // FIXME Adding default image
+        Picasso.with(this).load(imageUrl!=null?imageUrl:"https://goo.gl/eCUGnv").resize(100, 100).into(mProfileImv);
 
         mProfileTxv.setText(name);
         mProfileEmailTxv.setText(emaild);
