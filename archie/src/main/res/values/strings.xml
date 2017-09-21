@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Archie</string>
+    <string name="post_by_user" formatted="true">Posts by user : %s</string>
+</resources>

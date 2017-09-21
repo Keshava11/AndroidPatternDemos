@@ -1,1 +1,1 @@
-include ':app', ':stylemvplegacy'
+include ':app', ':stylemvplegacy', 'archie'

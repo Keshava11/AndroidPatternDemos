@@ -9,6 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/archie" />
             <option value="$PROJECT_DIR$/stylemvplegacy" />
           </set>
         </option>

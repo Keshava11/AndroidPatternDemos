@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AndroidPatternDemos.iml" filepath="$PROJECT_DIR$/AndroidPatternDemos.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/archie/archie.iml" filepath="$PROJECT_DIR$/archie/archie.iml" />
       <module fileurl="file://$PROJECT_DIR$/stylemvplegacy/stylemvplegacy.iml" filepath="$PROJECT_DIR$/stylemvplegacy/stylemvplegacy.iml" />
     </modules>
   </component>
